@@ -61,6 +61,7 @@ MAPM_ROUND3 = rounds
 MAPM_WIN1 = wins
 MAPM_WIN2 = wins
 MAPM_WIN3 = wins
+MAPM_MANAGER = Map Manager
 
 [ru]
 MAPM_VOTE_WILL_BEGIN = Голосование начнется в следующем раунде.
@@ -125,3 +126,4 @@ MAPM_ROUND3 = раунда
 MAPM_WIN1 = побед
 MAPM_WIN2 = победа
 MAPM_WIN3 = победы
+MAPM_MANAGER = Менеджер Карт

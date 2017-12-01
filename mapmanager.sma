@@ -31,8 +31,6 @@
 
 #define MIN_DENOMINATE_TIME 3
 
-new const PREFIX[] = "^4[MapManager]";
-
 ///**************************///
 
 #if BLOCK_MAP_COUNT <= 1
@@ -359,7 +357,7 @@ public Command_StartVote(id, flag)
 	else
 	{
 		SetNewRoundVote();
-		client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_VOTE_WILL_BEGIN");
+		client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_VOTE_WILL_BEGIN");
 	}
 	
 	return PLUGIN_HANDLED;
@@ -402,7 +400,7 @@ public Command_StopVote(id, flag)
 		if(id) get_user_name(id, szName, charsmax(szName));
 		else szName = "Server";
 		
-		client_print_color(0, id, "%s^3 %L", PREFIX, LANG_PLAYER, "MAPM_CANCEL_VOTE", szName);
+		client_print_color(0, id, "[^4%L^1]^3 %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_CANCEL_VOTE", szName);
 		log_amx("%s canceled vote.", szName);
 	}
 	
@@ -433,25 +431,25 @@ public Command_Timeleft(id)
 			new szRounds[16]; get_ending(iLeftRounds, "MAPM_ROUND1", "MAPM_ROUND2", "MAPM_ROUND3", szRounds, charsmax(szRounds));
 			len += formatex(szText[len], charsmax(szText) - len, "%d %L", iLeftRounds, LANG_PLAYER, szRounds);
 		}
-		client_print_color(0, print_team_default, "%s^1 %s.", PREFIX, szText);
+		client_print_color(0, print_team_default, "[^4%L^1] %s.", LANG_PLAYER, "MAPM_MANAGER", szText);
 	}
 	else
 	{
 		if (get_pcvar_num(g_pCvars[TIMELIMIT]))
 		{
 			new a = get_timeleft();
-			client_print_color(0, id, "%s^1 %L:^3 %d:%02d", PREFIX, LANG_PLAYER, "MAPM_TIME_TO_END", (a / 60), (a % 60));
+			client_print_color(0, id, "[^4%L^1] %L:^3 %d:%02d", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_TIME_TO_END", (a / 60), (a % 60));
 		}
 		else
 		{
-			client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NO_TIMELIMIT");
+			client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NO_TIMELIMIT");
 		}
 	}
 }
 public Command_TheTime(id)
 {
 	new szTime[64]; get_time("%Y/%m/%d - %H:%M:%S", szTime, charsmax(szTime));
-	client_print_color(0, print_team_default, "%s^3 %L", PREFIX, LANG_PLAYER, "MAPM_THETIME", szTime);
+	client_print_color(0, print_team_default, "[^4%L^1]^3 %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_THETIME", szTime);
 }
 
 #if defined FUNCTION_NEXTMAP
@@ -460,16 +458,16 @@ public Command_Nextmap(id)
 	if(g_bVoteFinished)
 	{
 		new szMap[32]; get_pcvar_string(g_pCvars[NEXTMAP], szMap, charsmax(szMap));
-		client_print_color(0, id, "%s^1 %L ^3%s^1.", PREFIX, LANG_PLAYER, "MAPM_NEXTMAP", szMap);
+		client_print_color(0, id, "[^4%L^1] %L ^3%s^1.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NEXTMAP", szMap);
 	}
 	else
 	{
-		client_print_color(0, id, "%s^1 %L ^3%L^1.", PREFIX, LANG_PLAYER, "MAPM_NEXTMAP", LANG_PLAYER, "MAPM_NOT_SELECTED");
+		client_print_color(0, id, "[^4%L^1] %L ^3%L^1.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NEXTMAP", LANG_PLAYER, "MAPM_NOT_SELECTED");
 	}
 }
 public Command_CurrentMap(id)
 {
-	client_print_color(0, id, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_CURRENT_MAP", g_szCurrentMap);
+	client_print_color(0, id, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_CURRENT_MAP", g_szCurrentMap);
 }
 #endif
 
@@ -481,7 +479,7 @@ public Command_RockTheVote(id)
 	#if defined FUNCTION_NIGHTMODE
 	if(g_bNightMode && g_bNightModeOneMap)
 	{
-		client_print_color(id, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_NOT_AVAILABLE");
+		client_print_color(id, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_NOT_AVAILABLE");
 		return PLUGIN_HANDLED;
 	}
 	#endif
@@ -489,7 +487,7 @@ public Command_RockTheVote(id)
 	new iTime = get_pcvar_num(g_pCvars[ROCK_DELAY]) * 60 - (floatround(get_pcvar_float(g_pCvars[TIMELIMIT]) * 60.0) - get_timeleft());
 	if(iTime > 0)
 	{
-		client_print_color(id, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_RTV_DELAY", iTime / 60, iTime % 60);
+		client_print_color(id, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_RTV_DELAY", iTime / 60, iTime % 60);
 		return PLUGIN_HANDLED;
 	}
 	
@@ -503,12 +501,12 @@ public Command_RockTheVote(id)
 		if(!get_pcvar_num(g_pCvars[START_VOTE_IN_NEW_ROUND]))
 		{
 			StartVote(0);
-			client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_RTV_START_VOTE");
+			client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_RTV_START_VOTE");
 		}
 		else
 		{
 			SetNewRoundVote();
-			client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_START_VOTE_NEW_ROUND");
+			client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_START_VOTE_NEW_ROUND");
 		}
 		return PLUGIN_HANDLED;
 	}
@@ -520,11 +518,11 @@ public Command_RockTheVote(id)
 		g_bRockVoted[id] = true;		
 		
 		new szName[33];	get_user_name(id, szName, charsmax(szName));
-		client_print_color(0, print_team_default, "%s^3 %L %L.", PREFIX, LANG_PLAYER, "MAPM_RTV_VOTED", szName, iVotes, LANG_PLAYER, szVote);
+		client_print_color(0, print_team_default, "[^4%L^1]^3 %L %L.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_RTV_VOTED", szName, iVotes, LANG_PLAYER, szVote);
 	}
 	else
 	{
-		client_print_color(id, print_team_default, "%s^1 %L %L.", PREFIX, LANG_PLAYER, "MAPM_RTV_ALREADY_VOTED", iVotes, LANG_PLAYER, szVote);
+		client_print_color(id, print_team_default, "[^4%L^1] %L %L.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_RTV_ALREADY_VOTED", iVotes, LANG_PLAYER, szVote);
 	}
 	
 	return PLUGIN_HANDLED;
@@ -671,7 +669,7 @@ NominateMap(id, map[32], map_index)
 	#if defined FUNCTION_BLOCK_MAPS
 	if(eMapInfo[m_BlockCount])
 	{
-		client_print_color(id, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NOM_NOT_AVAILABLE_MAP");
+		client_print_color(id, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NOM_NOT_AVAILABLE_MAP");
 		return 0;
 	}
 	#endif
@@ -692,19 +690,19 @@ NominateMap(id, map[32], map_index)
 				g_iNominatedMaps[id]--;
 				ArrayDeleteItem(g_aNominatedMaps, nominate_index - 1);
 				
-				client_print_color(0, id, "%s^3 %L", PREFIX, LANG_PLAYER, "MAPM_NOM_REMOVE_NOM", szName, map);
+				client_print_color(0, id, "[^4%L^1]^3 %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NOM_REMOVE_NOM", szName, map);
 				return 2;
 			}
-			client_print_color(id, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NOM_SPAM");
+			client_print_color(id, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NOM_SPAM");
 			return 0;
 		}
-		client_print_color(id, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NOM_ALREADY_NOM");
+		client_print_color(id, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NOM_ALREADY_NOM");
 		return 0;
 	}
 	
 	if(g_iNominatedMaps[id] >= NOMINATED_MAPS_PER_PLAYER)
 	{
-		client_print_color(id, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NOM_CANT_NOM");
+		client_print_color(id, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NOM_CANT_NOM");
 		return 0;
 	}
 	
@@ -718,11 +716,11 @@ NominateMap(id, map[32], map_index)
 	if(get_pcvar_num(g_pCvars[NOMINATION_DEL_NON_CUR_ONLINE]))
 	{
 		new iMinPlayers = eMapInfo[m_MinPlayers] == 0 ? 1 : eMapInfo[m_MinPlayers];
-		client_print_color(0, id, "%s^3 %L", PREFIX, LANG_PLAYER, "MAPM_NOM_MAP2", szName, map, iMinPlayers, eMapInfo[m_MaxPlayers]);
+		client_print_color(0, id, "[^4%L^1]^3 %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NOM_MAP2", szName, map, iMinPlayers, eMapInfo[m_MaxPlayers]);
 	}
 	else
 	{
-		client_print_color(0, id, "%s^3 %L", PREFIX, LANG_PLAYER, "MAPM_NOM_MAP", szName, map);
+		client_print_color(0, id, "[^4%L^1]^3 %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NOM_MAP", szName, map);
 	}
 	
 	return 1;
@@ -732,7 +730,7 @@ public Command_MapsList(id)
 	#if defined FUNCTION_NIGHTMODE
 	if(g_bNightMode)
 	{
-		client_print_color(id, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_NOT_AVAILABLE");
+		client_print_color(id, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_NOT_AVAILABLE");
 		return;
 	}
 	#endif
@@ -1194,7 +1192,7 @@ public Event_NewRound()
 	{
 		Intermission();
 		new szMapName[32]; get_pcvar_string(g_pCvars[NEXTMAP], szMapName, charsmax(szMapName));
-		client_print_color(0, print_team_default, "%s^3 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_NEXTMAP", szMapName);
+		client_print_color(0, print_team_default, "[^4%L^1]^3 %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_NEXTMAP", szMapName);
 		return;
 	}
 	#endif
@@ -1207,7 +1205,7 @@ public Event_NewRound()
 	{
 		Intermission();
 		new szMapName[32]; get_pcvar_string(g_pCvars[NEXTMAP], szMapName, charsmax(szMapName));
-		client_print_color(0, print_team_default, "%s^1 %L^3 %s^1.", PREFIX, LANG_PLAYER, "MAPM_NEXTMAP", szMapName);
+		client_print_color(0, print_team_default, "[^4%L^1] %L^3 %s^1.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NEXTMAP", szMapName);
 	}
 }
 public Event_TeamScore()
@@ -1286,7 +1284,7 @@ public Task_CheckNight()
 			{
 				g_fOldNightTimeLimit = get_pcvar_float(g_pCvars[TIMELIMIT]);
 				set_pcvar_float(g_pCvars[TIMELIMIT], 0.0);
-				client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_ON", iEndHour, iEndMinutes);
+				client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_ON", iEndHour, iEndMinutes);
 			}
 			else
 			{
@@ -1296,12 +1294,12 @@ public Task_CheckNight()
 				if(get_pcvar_num(g_pCvars[CHANGE_TYPE]) == 0)
 				{
 					Intermission();
-					client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_CHANGELEVEL", szMapName);
+					client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_CHANGELEVEL", szMapName);
 				}
 				else
 				{
 					g_bVoteFinished = true;
-					client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_NEXT_ROUND_CHANGE", szMapName);
+					client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_NEXT_ROUND_CHANGE", szMapName);
 				}
 			}
 		}
@@ -1309,13 +1307,13 @@ public Task_CheckNight()
 		{
 			if(get_pcvar_num(g_pCvars[START_VOTE_IN_NEW_ROUND]) == 0)
 			{
-				client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_CHANGELEVEL2");
+				client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_CHANGELEVEL2");
 				StartVote(0);
 			}
 			else
 			{
 				SetNewRoundVote();
-				client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_NEXT_ROUND_CHANGE2");
+				client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_NEXT_ROUND_CHANGE2");
 			}
 		}
 	}
@@ -1325,7 +1323,7 @@ public Task_CheckNight()
 		{
 			set_pcvar_float(g_pCvars[TIMELIMIT], g_fOldNightTimeLimit);
 		}
-		client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NIGHT_OFF");
+		client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NIGHT_OFF");
 	}
 }
 #endif
@@ -1687,11 +1685,11 @@ public VoteMenu_Handler(id, key)
 		new szName[32];	get_user_name(id, szName, charsmax(szName));
 		if(key == g_iMenuItemsCount)
 		{
-			client_print_color(0, id, "%s^3 %L", PREFIX, LANG_PLAYER, "MAPM_CHOSE_EXTEND", szName);
+			client_print_color(0, id, "[^4%L^1]^3 %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_CHOSE_EXTEND", szName);
 		}
 		else
 		{
-			client_print_color(0, id, "%s^3 %L", PREFIX, LANG_PLAYER, "MAPM_CHOSE_MAP", szName, g_eMenuItems[key][v_MapName]);
+			client_print_color(0, id, "[^4%L^1]^3 %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_CHOSE_MAP", szName, g_eMenuItems[key][v_MapName]);
 		}
 	}
 	
@@ -1742,12 +1740,12 @@ FinishVote()
 	{
 		if(g_iTotalVotes)
 		{
-			client_print_color(0, print_team_default, "%s^1 %L^3 %s^1.", PREFIX, LANG_PLAYER, "MAPM_NEXTMAP", g_eMenuItems[iMaxVote][v_MapName]);
+			client_print_color(0, print_team_default, "[^4%L^1] %L^3 %s^1.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NEXTMAP", g_eMenuItems[iMaxVote][v_MapName]);
 		}
 		else
 		{
 			iMaxVote = random_num(0, g_iMenuItemsCount - 1);
-			client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_NOBODY_VOTE", g_eMenuItems[iMaxVote][v_MapName]);
+			client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_NOBODY_VOTE", g_eMenuItems[iMaxVote][v_MapName]);
 		}
 		set_pcvar_string(g_pCvars[NEXTMAP], g_eMenuItems[iMaxVote][v_MapName]);
 		
@@ -1755,7 +1753,7 @@ FinishVote()
 		{
 			g_fOldTimeLimit = get_pcvar_float(g_pCvars[TIMELIMIT]);
 			set_pcvar_float(g_pCvars[TIMELIMIT], 0.0);
-			client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER, "MAPM_LASTROUND");
+			client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_LASTROUND");
 		}
 		#if defined FUNCTION_RTV
 		else if(g_bRockVote && get_pcvar_num(g_pCvars[ROCK_CHANGE_TYPE]) == 0 || get_pcvar_num(g_pCvars[CHANGE_TYPE]) == 0)
@@ -1765,7 +1763,7 @@ FinishVote()
 		{
 			new iSec = get_pcvar_num(g_pCvars[CHATTIME]);
 			new szSec[16]; get_ending(iSec, "MAPM_SECOND1", "MAPM_SECOND2", "MAPM_SECOND3", szSec, charsmax(szSec));
-			client_print_color(0, print_team_default, "%s^1 %L^1 %L.", PREFIX, LANG_PLAYER, "MAPM_MAP_CHANGE", iSec, LANG_PLAYER, szSec);
+			client_print_color(0, print_team_default, "[^4%L^1] %L^1 %L.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_MAP_CHANGE", iSec, LANG_PLAYER, szSec);
 			Intermission();
 		}
 		#if defined FUNCTION_RTV
@@ -1774,7 +1772,7 @@ FinishVote()
 		else if(get_pcvar_num(g_pCvars[CHANGE_TYPE]) == 1)
 		#endif
 		{
-			client_print_color(0, print_team_default, "%s^1 %L", PREFIX, LANG_PLAYER,"MAPM_MAP_CHANGE_NEXTROUND");
+			client_print_color(0, print_team_default, "[^4%L^1] %L", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER,"MAPM_MAP_CHANGE_NEXTROUND");
 		}
 	}
 	else
@@ -1805,14 +1803,14 @@ FinishVote()
 			}
 			
 			new szRounds[16]; get_ending(iRounds, "MAPM_ROUND1", "MAPM_ROUND2", "MAPM_ROUND3", szRounds, charsmax(szRounds));
-			client_print_color(0, print_team_default, "%s^1 %L %L.", PREFIX, LANG_PLAYER, "MAPM_MAP_EXTEND", iRounds, LANG_PLAYER, szRounds);
+			client_print_color(0, print_team_default, "[^4%L^1] %L %L.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_MAP_EXTEND", iRounds, LANG_PLAYER, szRounds);
 		}
 		else
 		{
 			new iMin = get_pcvar_num(g_pCvars[EXTENDED_TIME]);
 			new szMin[16]; get_ending(iMin, "MAPM_MINUTE1", "MAPM_MINUTE2", "MAPM_MINUTE3", szMin, charsmax(szMin));
 			
-			client_print_color(0, print_team_default, "%s^1 %L %L.", PREFIX, LANG_PLAYER, "MAPM_MAP_EXTEND", iMin, LANG_PLAYER, szMin);
+			client_print_color(0, print_team_default, "[^4%L^1] %L %L.", LANG_PLAYER, "MAPM_MANAGER", LANG_PLAYER, "MAPM_MAP_EXTEND", iMin, LANG_PLAYER, szMin);
 			set_pcvar_float(g_pCvars[TIMELIMIT], get_pcvar_float(g_pCvars[TIMELIMIT]) + float(iMin));
 		}
 	}
